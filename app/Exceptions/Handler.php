@@ -6,6 +6,7 @@ use App\Traits\ApiResponseTrait;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
 
 class Handler
@@ -27,8 +28,12 @@ class Handler
                 $code = Response::HTTP_UNAUTHORIZED;
                 $message = 'No estas autenticado.';
                 break;
-
+            case NotFoundHttpException::class:
+                $code = Response::HTTP_NOT_FOUND;
+                $message = config('messages.error.show');
+                break;
         }
+
         return $this->errorResponse($message, $errors, $trace, $code);
     }
 }

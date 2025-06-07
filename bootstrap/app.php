@@ -1,9 +1,12 @@
 <?php
 
 use App\Exceptions\Handler;
+use App\Http\Middleware\RoleMiddleware;
 use App\Infrastructure\Contracts\IAuthContract;
+use App\Infrastructure\Contracts\ICategoryContract;
 use App\Infrastructure\Contracts\IUserContract;
 use App\Infrastructure\Services\AuthService;
+use App\Infrastructure\Services\CategoryService;
 use App\Infrastructure\Services\UserService;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -17,11 +20,14 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        //
+        $middleware->alias([
+            'roles' => RoleMiddleware::class,
+        ]);
     })
     ->withBindings([
         IAuthContract::class => AuthService::class,
         IUserContract::class =>  UserService::class,
+        ICategoryContract::class =>  CategoryService::class,
     ])
     ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->render(function (Throwable $e) {

@@ -26,7 +26,6 @@ trait ApiResponseTrait
         int $code = Response::HTTP_BAD_REQUEST
     ): JsonResponse
     {
-
         return response()->json([
             'message' => $message,
             'errors' => $errors,

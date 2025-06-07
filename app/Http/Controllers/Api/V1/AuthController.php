@@ -10,7 +10,7 @@ use Illuminate\Http\JsonResponse;
 
 class AuthController extends Controller
 {
-    public function __construct(private IAuthContract $authServices)
+    public function __construct(private readonly IAuthContract $authServices)
     {}
 
     public function login(LoginRequest $request): JsonResponse

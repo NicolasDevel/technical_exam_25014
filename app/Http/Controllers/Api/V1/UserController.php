@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 class UserController extends Controller
 {
 
-    public function __construct(private IUserContract $userServices)
+    public function __construct(private readonly IUserContract $userServices)
     {
     }
 
