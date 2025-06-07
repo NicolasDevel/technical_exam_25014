@@ -1,7 +1,9 @@
 <?php
 
 use App\Exceptions\Handler;
+use App\Infrastructure\Contracts\IAuthContract;
 use App\Infrastructure\Contracts\IUserContract;
+use App\Infrastructure\Services\AuthService;
 use App\Infrastructure\Services\UserService;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -18,6 +20,7 @@ return Application::configure(basePath: dirname(__DIR__))
         //
     })
     ->withBindings([
+        IAuthContract::class => AuthService::class,
         IUserContract::class =>  UserService::class,
     ])
     ->withExceptions(function (Exceptions $exceptions) {
