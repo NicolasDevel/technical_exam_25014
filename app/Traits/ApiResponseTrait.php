@@ -7,7 +7,11 @@ use Symfony\Component\HttpFoundation\Response;
 
 trait ApiResponseTrait
 {
-    public function successResponse(mixed $data, string $message, int $code = Response::HTTP_OK): JsonResponse
+    public function successResponse(
+        mixed $data,
+        string $message,
+        int $code = Response::HTTP_OK
+    ): JsonResponse
     {
         return response()->json([
             'message' => $message,
@@ -15,11 +19,17 @@ trait ApiResponseTrait
         ], $code);
     }
 
-    public function errorResponse(string $message, array $trace = [] , int $code = Response::HTTP_BAD_REQUEST): JsonResponse
+    public function errorResponse(
+        string $message,
+        array $errors = [] ,
+        array $trace = [],
+        int $code = Response::HTTP_BAD_REQUEST
+    ): JsonResponse
     {
 
         return response()->json([
             'message' => $message,
+            'errors' => $errors,
             ...$this->getTrace($trace),
         ], $code);
     }
