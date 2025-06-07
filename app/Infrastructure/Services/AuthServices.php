@@ -2,7 +2,7 @@
 
 namespace App\Infrastructure\Services;
 
-use App\Http\Resources\V1\User\AuthResource;
+use App\Http\Resources\V1\User\UserResource;
 use App\Traits\ApiResponseTrait;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,7 +19,7 @@ class AuthServices
             return $this->successResponse([
                 'token_type' => 'Bearer',
                 'token' => $token->plainTextToken,
-                'user' => AuthResource::make($user),
+                'user' => UserResource::make($user),
             ], 'Se ha iniciado sesión correctamente.');
         }
         return $this->errorResponse('Las credenciales son incorrectas.', code: Response::HTTP_UNAUTHORIZED);

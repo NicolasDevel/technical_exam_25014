@@ -14,7 +14,7 @@ class Handler
 
     public function handle(Throwable $e)
     {
-
+        dd($e);
         $code =  $e->getCode();
         $message = $e->getMessage();
         $trace = $e->getTrace();

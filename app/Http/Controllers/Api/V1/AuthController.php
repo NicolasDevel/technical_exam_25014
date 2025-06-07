@@ -6,11 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\auth\LoginRequest;
 use App\Infrastructure\Services\AuthServices;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
-    public function __construct(private AuthServices $authServices )
+    public function __construct(private AuthServices $authServices)
     {}
 
     public function login(LoginRequest $request): JsonResponse
