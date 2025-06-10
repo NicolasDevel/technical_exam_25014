@@ -14,6 +14,7 @@ class Product extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
+        'user_id',
         'category_id',
         'name',
         'description',
@@ -21,8 +22,17 @@ class Product extends Model
         'stock',
     ];
 
+    protected $casts = [
+        'price' => 'decimal:2',
+    ];
+
     public function category():  BelongsTo
     {
         return $this->belongsTo(Category::class);
+    }
+
+    public function user()  :  BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 }

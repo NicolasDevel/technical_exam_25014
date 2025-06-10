@@ -7,9 +7,10 @@ use App\Http\Requests\V1\Product\UpdateRequest;
 use App\Http\Requests\V1\Product\StoreRequest;
 use App\Http\Resources\V1\Product\ProductResource;
 use App\Infrastructure\Contracts\IProductContract;
-use App\Infrastructure\Services\ProductService;
 use App\Models\Product;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
 class ProductController extends Controller
@@ -17,7 +18,7 @@ class ProductController extends Controller
     public function __construct(private readonly IProductContract $productService)
     {}
 
-    public function index(Request $request)
+    public function index(Request $request): JsonResponse
     {
         return $this->successResponse(
             $this->productService->index($request->query('paginate', true)),
@@ -25,7 +26,7 @@ class ProductController extends Controller
         );
     }
 
-    public function show(Product $product)
+    public function show(Product $product): JsonResponse
     {
         return $this->successResponse(
             ProductResource::make($product),
@@ -33,9 +34,12 @@ class ProductController extends Controller
         );
     }
 
-    public function store(StoreRequest $request)
+    public function store(StoreRequest $request): JsonResponse
     {
-        $store = rescue(fn () => $this->productService->store($request->validated()));
+        $store = rescue(fn () => $this->productService->store([
+            'user_id' => Auth::user()->id,
+            ...$request->all()
+        ]));
 
         if (!$store) {
             return $this->errorResponse(
@@ -44,13 +48,13 @@ class ProductController extends Controller
         }
 
         return $this->successResponse(
-            ProductResource::make($store),
+            $store,
             config('messages.success.store'),
             Response::HTTP_CREATED
         );
     }
 
-    public function update(UpdateRequest $request, Product $product)
+    public function update(UpdateRequest $request, Product $product): JsonResponse
     {
         $updated = rescue(fn() => $this->productService->update($product, $request->validated()));
 
@@ -61,13 +65,13 @@ class ProductController extends Controller
         }
 
         return $this->successResponse(
-            ProductResource::make($product),
+            $updated,
             config('messages.success.update'),
         );
 
     }
 
-    public function destroy(Product $product)
+    public function destroy(Product $product): JsonResponse
     {
         $delete = rescue(fn() => $this->productService->delete($product));
         if (!$delete) {

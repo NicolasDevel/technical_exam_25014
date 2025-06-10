@@ -16,7 +16,7 @@ return new class extends Migration
         $table->foreignId('category_id')->constrained();
         $table->foreignId('user_id')->constrained();
         $table->string('name', 100);
-        $table->text('description');
+        $table->text('description')->nullable();
         $table->decimal('price', 15, 2);
         $table->unsignedInteger('stock');
         $table->softDeletes();
