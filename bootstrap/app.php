@@ -4,9 +4,11 @@ use App\Exceptions\Handler;
 use App\Http\Middleware\RoleMiddleware;
 use App\Infrastructure\Contracts\IAuthContract;
 use App\Infrastructure\Contracts\ICategoryContract;
+use App\Infrastructure\Contracts\IProductContract;
 use App\Infrastructure\Contracts\IUserContract;
 use App\Infrastructure\Services\AuthService;
 use App\Infrastructure\Services\CategoryService;
+use App\Infrastructure\Services\ProductService;
 use App\Infrastructure\Services\UserService;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -28,6 +30,7 @@ return Application::configure(basePath: dirname(__DIR__))
         IAuthContract::class => AuthService::class,
         IUserContract::class =>  UserService::class,
         ICategoryContract::class =>  CategoryService::class,
+        IProductContract::class =>  ProductService::class,
     ])
     ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->render(function (Throwable $e) {

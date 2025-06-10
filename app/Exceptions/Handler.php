@@ -4,6 +4,7 @@ namespace App\Exceptions;
 
 use App\Traits\ApiResponseTrait;
 use Illuminate\Auth\AuthenticationException;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -13,7 +14,7 @@ class Handler
 {
     use ApiResponseTrait;
 
-    public function handle(Throwable $e)
+    public function handle(Throwable $e): JsonResponse
     {
         $code =  $e->getCode();
         $message = $e->getMessage();
